@@ -1,23 +1,13 @@
-from flask import Flask, request
+from flask import Flask
+from routes import set_dialog_flow_route
 
-app = Flask(__name__)
 
-@app.route('/', methods=["POST", "GET"])
-def webhook():
-    if request.method == "GET":
-        return "Hello, World!"
-    elif request.method == "POST":
-        payload = request.json
-        user_response = (payload['queryResult']['queryText'])
-        bot_response = (payload['queryResult']['fulfillmentText'])
-        if user_response or bot_response != "":
-            print("User: " + user_response)
-            print("Bot: " + bot_response)
-            return "Message recieved."
-        else:
-            print(request.data)
-            return "200"
+def create_app():
+    app = Flask(__name__)
+    set_dialog_flow_route(app)
+    return app
 
 
 if __name__ == '__main__':
+    app = create_app()
     app.run(debug=True)
