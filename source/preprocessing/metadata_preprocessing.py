@@ -1,58 +1,37 @@
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import linear_kernel
-# Load data
-df = pd.read_json('../../data/filtered/books.json')
 
-# Data Cleaning
-# convert any non-list values to an empty list
-df[['authors', 'subjects', 'bookshelves', 'languages']] = df[
-    ['authors', 'subjects', 'bookshelves', 'languages']].applymap(lambda x: x if type(x) == list else [])
 
-# Splitting the title into 'title' and 'subtitle'
-df[['title', 'subtitle']] = df['title'].str.split('; Or,', n=1, expand=True)
+def preprocess_books(json_path):
+    def cleanup_list(x):
+        if isinstance(x, list):
+            return " | ".join(map(str, x))
+        else:
+            return ""
 
-# Stripping leading/trailing white spaces that might be introduced during splitting
-df['title'] = df['title'].str.strip()
-df['subtitle'] = df['subtitle'].str.strip()
+    # Load data
+    df = pd.read_json(json_path)
 
-# Replace NaN with empty strings if no subtitle exists
-df['subtitle'].fillna('', inplace=True)
+    # Convert the lists into strings
+    df["authors_str"] = df["authors"].apply(cleanup_list)
+    df["subjects_str"] = df["subjects"].apply(cleanup_list)
+    df["bookshelves_str"] = df["bookshelves"].apply(cleanup_list)
+    df["languages_str"] = df["languages"].apply(cleanup_list)
 
-# Feature Engineering
-# create count features
-df['num_authors'] = df['authors'].apply(len)
-df['num_subjects'] = df['subjects'].apply(len)
-df['num_bookshelves'] = df['bookshelves'].apply(len)
-df['num_languages'] = df['languages'].apply(len)
-df['title_length'] = df['title'].apply(len)
+    # One-Hot Encoding
+    df_one_hot_authors = df['authors_str'].str.get_dummies(sep=' | ')
+    df_one_hot_subjects = df['subjects_str'].str.get_dummies(sep=' | ')
+    df_one_hot_bookshelves = df['bookshelves_str'].str.get_dummies(sep=' | ')
+    df_one_hot_languages = df['languages_str'].str.get_dummies(sep=' | ')
 
-# Convert list of languages to string type, as get_dummies() does not work with list type
-df['languages'] = df['languages'].apply(lambda x: ', '.join(x))
+    # Combine the original data with the one-hot encoded data
+    df_combined = pd.concat([
+        df, df_one_hot_authors, df_one_hot_subjects,
+        df_one_hot_bookshelves, df_one_hot_languages], axis=1)
 
-# Apply One-Hot Encoding
-df_languages = pd.get_dummies(df['languages'].str.get_dummies(sep=', '))
+    return df_combined
 
-# Convert the lists into strings
-df["authors"] = df["authors"].apply(lambda x: " ".join(x))
-df["subjects"] = df["subjects"].apply(lambda x: " ".join(x))
-df["bookshelves"] = df["bookshelves"].apply(lambda x: " ".join(x))
 
-# Combine the fields to create a "documents" for TF-IDF (Assuming your feature columns are cleaned of any NA values)
-df['documents'] = df['title'] + ' ' + df['authors'] + ' ' + df['subjects'] + ' ' + df['bookshelves']
-
-vectorizer = TfidfVectorizer()
-document_vectors = vectorizer.fit_transform(df['documents'])
-
-# Compute the cosine similarity matrix
-cosine_sim = linear_kernel(document_vectors, document_vectors)
-
-# Get the pairwsie similarity scores of all books with that book
-sim_scores = list(enumerate(cosine_sim[book_index]))
-
-# Sort the books based on the similarity scores
-sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-
-# Preview the data
-print(df.head())
-print(df.info())
+# Use like this
+# df_combined = preprocess_books('/mnt/d/Main/Uni/bakalauras/BookRecommendation/data/filtered/books.json')
+# print(df_combined.head())
+# print(df_combined.info())
