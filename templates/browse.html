@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header>
+    <h1>Browse Books</h1>
+</header>
+<nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('browse') }}">Browse Books</a>
+    <a href="{{ url_for('recommendations') }}">Recommendations</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+</nav>
+<div class="container">
+    <h2>Explore Our Collection</h2>
+    <p>Find books across different genres and authors.</p>
+    <div class="book-list">
+        <div class="book">
+            <h4>1984</h4>
+            <p>by George Orwell</p>
+        </div>
+        <div class="book">
+            <h4>The Great Gatsby</h4>
+            <p>by F. Scott Fitzgerald</p>
+        </div>
+        <div class="book">
+            <h4>To Kill a Mockingbird</h4>
+            <p>by Harper Lee</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

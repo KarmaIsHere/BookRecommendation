@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header>
+    <h1>Recommended Books</h1>
+</header>
+<nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('browse') }}">Browse Books</a>
+    <a href="{{ url_for('recommendations') }}">Recommendations</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+</nav>
+<div class="container">
+    <h2>Our Top Picks</h2>
+    <p>Books we think you’ll love based on your interests.</p>
+    <div class="book-list">
+        <div class="book">
+            <h4>The Catcher in the Rye</h4>
+            <p>by J.D. Salinger</p>
+        </div>
+        <div class="book">
+            <h4>Brave New World</h4>
+            <p>by Aldous Huxley</p>
+        </div>
+        <div class="book">
+            <h4>The Hobbit</h4>
+            <p>by J.R.R. Tolkien</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e3f2fd; /* Light Blue */
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background-color: #4682B4; /* Steel Blue */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation */
+nav {
+    background-color: #5A9BCF; /* Medium Blue */
+    padding: 12px;
+    text-align: center;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px;
+    display: inline-block;
+    font-weight: bold;
+    transition: background-color 0.3s ease-in-out, transform 0.2s;
+    border-radius: 5px;
+}
+
+nav a:hover {
+    background-color: #357ABD; /* Darker Blue */
+    transform: scale(1.05);
+}
+
+/* Main Page Container */
+.container {
+    width: 80%;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Align text to the left */
+}
+
+/* Headings */
+h2, h3 {
+    color: #2C3E50; /* Dark Blue */
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+    text-align: left; /* Left align */
+}
+
+/* Paragraph Styling */
+p {
+    font-size: 1.1rem;
+    color: #555;
+    padding: 5px 0;
+}
+
+/* List Styling */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background: #E3F2FD;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+}
+
+/* Hero Section */
+.hero {
+    padding: 40px;
+    background-color: #bbdefb; /* Light Pastel Blue */
+    border-radius: 8px;
+    text-align: left; /* Left align */
+}
+
+/* Book List */
+.book-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Align to the left */
+    margin-top: 20px;
+}
+
+/* Book Cards */
+.book {
+    background: #90caf9; /* Soft Blue */
+    padding: 15px;
+    margin: 10px;
+    width: 200px;
+    text-align: left; /* Left align */
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.book:hover {
+    transform: translateY(-5px);
+}
+
+/* FORM STYLING (For Login & Register Pages) */
+.form-container {
+    width: 350px;
+    margin: 50px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Left align */
+}
+
+/* Form Elements */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s ease-in-out;
+}
+
+form input:focus {
+    border: 1px solid #42a5f5;
+    outline: none;
+}
+
+/* Form Buttons */
+input[type="submit"], button {
+    background-color: #42a5f5; /* Medium Blue */
+    color: white;
+    border: none;
+    padding: 14px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+    margin-top: 12px;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: #1e88e5; /* Slightly Darker Blue */
+    transform: scale(1.05);
+}
+
+/* GitHub Button */
+.github-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    background: #357ABD;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+}
+
+.github-button:hover {
+    background: #285A8F;
+    transform: scale(1.05);
+}
+
+/* Mobile-Friendly Adjustments */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+    }
+
+    .book-list {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-container {
+        width: 90%;
+    }
+
+    form input {
+        width: 100%;
+    }
+}

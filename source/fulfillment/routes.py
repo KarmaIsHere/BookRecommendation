@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import request
 
 
 def process_and_print_response(payload):
@@ -21,9 +21,3 @@ def set_dialog_flow_route(app):
         elif request.method == "POST":
             payload = request.json
             return process_and_print_response(payload)
-
-
-def create_app():
-    app = Flask(__name__)
-    set_dialog_flow_route(app)
-    return app

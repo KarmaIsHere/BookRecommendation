@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookie</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<header>
+    <h1>Welcome to Bookie</h1>
+</header>
+<nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('browse') }}">Browse Books</a>
+    <a href="{{ url_for('recommendations') }}">Recommendations</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+</nav>
+
+<div class="container">
+    <div class="hero">
+        <h2>Discover Your Next Favorite Book</h2>
+        <p>Browse our collection of recommended books, carefully selected for you.</p>
+    </div>
+    <h3>Featured Books</h3>
+    <div class="book-list">
+        <div class="book">
+            <h4>Pride and Prejudice</h4>
+            <p>by Jane Austen</p>
+        </div>
+        <div class="book">
+            <h4>Moby-Dick</h4>
+            <p>by Herman Melville</p>
+        </div>
+        <div class="book">
+            <h4>Frankenstein</h4>
+            <p>by Mary Shelley</p>
+        </div>
+        <div class="book">
+            <h4>War and Peace</h4>
+            <p>by Leo Tolstoy</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
