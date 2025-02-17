@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
-from source.fulfillment.routes import set_dialog_flow_route
-
+from flask import Flask, render_template, redirect, url_for, request
+from routes.chatbot_routes import chatbot_bp
 
 def create_app():
     app = Flask(__name__)
-    set_dialog_flow_route(app)
+    app.register_blueprint(chatbot_bp)  # Register chatbot blueprint
 
     @app.route("/home")
     def home():
@@ -31,11 +30,8 @@ def create_app():
         if request.method == 'POST':
             username = request.form.get('username')
             password = request.form.get('password')
-
             print(f"Username: {username}, Password: {password}")
-
             return redirect(url_for('home'))
-
         return render_template('login.html')
 
     @app.route("/register", methods=['GET', 'POST'])
@@ -44,15 +40,11 @@ def create_app():
             username = request.form.get('username')
             email = request.form.get('email')
             password = request.form.get('password')
-
             print(f"Username: {username}, Email: {email}, Password: {password}")
-
             return redirect(url_for('login'))
-
         return render_template('register.html')
 
     return app
-
 
 app = create_app()
 

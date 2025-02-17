@@ -184,6 +184,15 @@ input[type="submit"]:hover, button:hover {
     transform: scale(1.05);
 }
 
+df-messenger {
+    --df-messenger-bot-message: #e3f2fd;
+    --df-messenger-button-titlebar-color: #007bff;
+    --df-messenger-chat-background: #ffffff;
+    --df-messenger-font-color: #000000;
+    --df-messenger-send-icon: #007bff;
+    --df-messenger-user-message: #007bff;
+}
+
 /* Mobile-Friendly Adjustments */
 @media (max-width: 600px) {
     .container {
