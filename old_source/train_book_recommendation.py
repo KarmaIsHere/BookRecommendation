@@ -14,7 +14,7 @@ args = parser.parse_args()
 num_books = args.num_books
 
 # load the processed data
-with open('/mnt/d/Main/Uni/bakalauras/BookRecommendation/source/preprocessing/preprocessed_data_chunk_' + str(
+with open('/mnt/d/Main/Uni/bakalauras/BookRecommendation/old_source/preprocessing/preprocessed_data_chunk_' + str(
         num_books) + '.pkl', 'rb') as f:
     books_encoded, genres_encoded, authors_encoded, vocab = pickle.load(f)
 
