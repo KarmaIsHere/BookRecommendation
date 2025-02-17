@@ -1,7 +1,6 @@
 from flask import request
 
 def process_and_print_response(payload):
-    """Processes the Dialogflow response and prints user/bot messages."""
     user_message = payload['queryResult'].get('queryText', '')
     bot_message = payload['queryResult'].get('fulfillmentText', '')
 

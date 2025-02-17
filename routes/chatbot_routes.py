@@ -5,8 +5,7 @@ from utils.chatbot import process_and_print_response
 chatbot_bp = Blueprint('chatbot', __name__)
 
 @chatbot_bp.route('/webhook', methods=["POST", "GET"])
-def webhook():
-    """Handles GET requests for testing and POST requests for Dialogflow fulfillment."""
+def webhook(): # Handles GET requests for testing and POST requests for Dialogflow fulfillment.
     if request.method == "GET":
         return "Hello, World!"  # Test GET request
     elif request.method == "POST":

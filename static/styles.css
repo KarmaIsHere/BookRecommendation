@@ -1,16 +1,14 @@
-/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e3f2fd; /* Light Blue */
+    background-color: #e3f2fd;
     color: #333;
     line-height: 1.6;
 }
 
-/* Header */
 header {
-    background-color: #4682B4; /* Steel Blue */
+    background-color: #4682B4;
     color: white;
     padding: 20px;
     text-align: center;
@@ -19,9 +17,8 @@ header {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Navigation */
 nav {
-    background-color: #5A9BCF; /* Medium Blue */
+    background-color: #5A9BCF;
     padding: 12px;
     text-align: center;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
@@ -38,11 +35,10 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #357ABD; /* Darker Blue */
+    background-color: #357ABD;
     transform: scale(1.05);
 }
 
-/* Main Page Container */
 .container {
     width: 80%;
     max-width: 900px;
@@ -51,25 +47,22 @@ nav a:hover {
     background: white;
     border-radius: 10px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-    text-align: left; /* Align text to the left */
+    text-align: left;
 }
 
-/* Headings */
 h2, h3 {
-    color: #2C3E50; /* Dark Blue */
+    color: #2C3E50;
     margin-bottom: 15px;
     font-size: 1.8rem;
-    text-align: left; /* Left align */
+    text-align: left;
 }
 
-/* Paragraph Styling */
 p {
     font-size: 1.1rem;
     color: #555;
     padding: 5px 0;
 }
 
-/* List Styling */
 ul {
     list-style: none;
     padding: 0;
@@ -83,29 +76,26 @@ ul li {
     font-size: 1.1rem;
 }
 
-/* Hero Section */
 .hero {
     padding: 40px;
-    background-color: #bbdefb; /* Light Pastel Blue */
+    background-color: #bbdefb;
     border-radius: 8px;
-    text-align: left; /* Left align */
+    text-align: left;
 }
 
-/* Book List */
 .book-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Align to the left */
+    justify-content: flex-start;
     margin-top: 20px;
 }
 
-/* Book Cards */
 .book {
-    background: #90caf9; /* Soft Blue */
+    background: #90caf9;
     padding: 15px;
     margin: 10px;
     width: 200px;
-    text-align: left; /* Left align */
+    text-align: left;
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
@@ -115,7 +105,6 @@ ul li {
     transform: translateY(-5px);
 }
 
-/* FORM STYLING (For Login & Register Pages) */
 .form-container {
     width: 350px;
     margin: 50px auto;
@@ -123,10 +112,9 @@ ul li {
     background: white;
     border-radius: 10px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-    text-align: left; /* Left align */
+    text-align: left;
 }
 
-/* Form Elements */
 form {
     display: flex;
     flex-direction: column;
@@ -147,9 +135,8 @@ form input:focus {
     outline: none;
 }
 
-/* Form Buttons */
 input[type="submit"], button {
-    background-color: #42a5f5; /* Medium Blue */
+    background-color: #42a5f5;
     color: white;
     border: none;
     padding: 14px 16px;
@@ -162,11 +149,10 @@ input[type="submit"], button {
 }
 
 input[type="submit"]:hover, button:hover {
-    background-color: #1e88e5; /* Slightly Darker Blue */
+    background-color: #1e88e5;
     transform: scale(1.05);
 }
 
-/* GitHub Button */
 .github-button {
     display: inline-block;
     margin-top: 20px;
