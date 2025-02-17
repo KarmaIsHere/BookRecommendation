@@ -1,5 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 from routes.chatbot_routes import chatbot_bp
+from utils.catalog import get_books_catalog
+
 
 def create_app():
     app = Flask(__name__)
@@ -11,7 +13,9 @@ def create_app():
 
     @app.route("/browse")
     def browse():
-        return render_template("browse.html")
+        limit = request.args.get("limit", default=12, type=int)  # Get limit from query string
+        books = get_books_catalog(limit=limit)
+        return render_template("browse.html", books=books)
 
     @app.route("/recommendations")
     def recommendations():

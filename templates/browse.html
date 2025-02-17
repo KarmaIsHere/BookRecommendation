@@ -17,23 +17,20 @@
     <a href="{{ url_for('about') }}">About</a>
     <a href="{{ url_for('contact') }}">Contact</a>
 </nav>
+
 <div class="container">
     <h2>Explore Our Collection</h2>
     <p>Find books across different genres and authors.</p>
+
     <div class="book-list">
+        {% for book in books %}
         <div class="book">
-            <h4>1984</h4>
-            <p>by George Orwell</p>
+            <h4>{{ book['Title'] }}</h4>
+            <p>by {{ book['Authors'] }}</p>
         </div>
-        <div class="book">
-            <h4>The Great Gatsby</h4>
-            <p>by F. Scott Fitzgerald</p>
-        </div>
-        <div class="book">
-            <h4>To Kill a Mockingbird</h4>
-            <p>by Harper Lee</p>
-        </div>
+        {% endfor %}
     </div>
 </div>
+
 </body>
 </html>
