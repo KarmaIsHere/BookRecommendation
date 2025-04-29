@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Books</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='book_search.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
@@ -29,9 +30,9 @@
     </div>
 
     <div id="loading" class="loading-spinner" style="display: none;">
-    <div class="spinner"></div>
-    <p>Loading books...</p>
-</div>
+        <div class="spinner"></div>
+        <p>Loading books...</p>
+    </div>
     <div id="book-list" class="book-list">
     </div>
     <div id="pagination" class="pagination-controls">
@@ -112,14 +113,23 @@
         books.forEach(book => {
             const bookElement = document.createElement('div');
             bookElement.classList.add('book-line');
+            bookElement.style.cursor = 'pointer';
+            bookElement.onclick = () => {
+                window.open(`/book/${book.id}`, '_blank'); // Opens in new tab
+            };
 
             bookElement.innerHTML = `
-                <span class="book-title">${book.title}</span>
-                <span class="book-authors">by ${book.authors.join(', ')}</span>
-            `;
+            <span class="book-title">${book.title}</span>
+            <span class="book-authors">by ${book.authors.join(', ')}</span>
+        `;
+
+            bookElement.onclick = () => {
+                window.location.href = `/book/${book.book_id}`;
+            };
             bookListDiv.appendChild(bookElement);
         });
     }
+
 
     function updatePagination(currentPage, totalPages) {
         const paginationDiv = document.getElementById('pagination');

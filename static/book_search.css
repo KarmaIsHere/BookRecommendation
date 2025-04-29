@@ -1,0 +1,162 @@
+
+/* =======================
+   Book Listing
+========================== */
+.book-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.book-line {
+    display: flex;
+    justify-content: space-between;
+    background-color: #E3F2FD;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.book-title {
+    font-weight: bold;
+}
+
+.book-authors {
+    color: #555;
+}
+
+
+/* =======================
+   Pagination Controls
+========================== */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.pagination-controls span {
+    font-size: 16px;
+    margin: 0 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+.pagination-buttons button {
+    background-color: #42a5f5;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.pagination-buttons button:hover {
+    background-color: #1e88e5;
+}
+
+
+/* =======================
+   Search Bar
+========================== */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 10px;
+}
+
+.search-bar input[type="text"] {
+    padding: 10px 15px;
+    width: 250px;
+    border: 2px solid #90caf9;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f0faff;
+    transition: border-color 0.3s ease;
+}
+
+.search-bar input[type="text"]:focus {
+    outline: none;
+    border-color: #42a5f5;
+}
+
+.search-bar button {
+    background-color: #42a5f5;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #1e88e5;
+}
+
+
+/* =======================
+   Loading Spinner
+========================== */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0;
+    color: #42a5f5;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.spinner {
+    border: 6px solid #bbdefb;
+    border-top: 6px solid #42a5f5;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/* =======================
+   Responsive Design
+========================== */
+@media (max-width: 600px) {
+    .container {
+        width: 95%;
+    }
+
+    .book-list {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form-container {
+        width: 90%;
+    }
+
+    form input {
+        width: 100%;
+    }
+}

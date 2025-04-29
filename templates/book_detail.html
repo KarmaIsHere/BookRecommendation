@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Detail</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='book_details.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Book Detail</h1>
+    </header>
+
+    <div class="container">
+        <h2 id="title">Loading...</h2>
+        <p id="authors"></p>
+        <div id="genres" class="genre-tags"></div>
+        <a href="{{ url_for('browse') }}" class="back-link">← Back to Browse</a>
+    </div>
+
+    <script>
+        const bookId = {{ book_id }};
+
+        axios.get(`http://localhost:8080/api/book/details/${bookId}`)
+            .then(response => {
+                const book = response.data;
+                document.getElementById('title').innerText = book.title;
+                document.getElementById('authors').innerText = "by " + book.authors.join(', ');
+
+                const genresDiv = document.getElementById('genres');
+                genresDiv.innerHTML = '';
+                book.genres.forEach(genre => {
+                    const tag = document.createElement('span');
+                    tag.classList.add('genre-tag');
+                    tag.innerText = genre;
+                    genresDiv.appendChild(tag);
+                });
+            })
+            .catch(err => {
+                document.getElementById('title').innerText = 'Book not found';
+                console.error('Error loading book:', err);
+            });
+    </script>
+</body>
+</html>
