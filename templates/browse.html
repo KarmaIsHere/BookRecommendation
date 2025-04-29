@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Books</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <header>
@@ -21,16 +22,135 @@
 <div class="container">
     <h2>Explore Our Collection</h2>
     <p>Find books across different genres and authors.</p>
+    <div class="search-bar">
+        <input type="text" id="searchQuery" placeholder="Search by title or author">
+        <button onclick="handleSearch()">Search</button>
+        <button onclick="clearSearch()">Clear</button>
+    </div>
 
-    <div class="book-list">
-        {% for book in books %}
-        <div class="book">
-            <h4>{{ book['Title'] }}</h4>
-            <p>by {{ book['Authors'] }}</p>
-        </div>
-        {% endfor %}
+    <div id="loading" class="loading-spinner" style="display: none;">
+    <div class="spinner"></div>
+    <p>Loading books...</p>
+</div>
+    <div id="book-list" class="book-list">
+    </div>
+    <div id="pagination" class="pagination-controls">
     </div>
 </div>
+
+<script>
+    let currentPage = 0;
+    let pageSize = 10;
+    let isSearching = false;
+    let lastQuery = '';
+
+    function handleSearch(page = 0) {
+        const query = document.getElementById('searchQuery').value.trim();
+        currentPage = page;
+
+        if (query === '') {
+            isSearching = false;
+            fetchBooks();
+            return;
+        }
+
+        isSearching = true;
+        lastQuery = query;
+
+        showLoading();
+        axios.get(`http://localhost:8080/api/book/search?query=${encodeURIComponent(query)}&page=${page}&size=${pageSize}`)
+            .then(response => {
+                const data = response.data;
+                displayBooks(data.books);
+                updatePagination(data.currentPage, data.totalPages);
+            })
+            .catch(error => console.error('Error searching books:', error))
+            .finally(hideLoading);
+    }
+
+    function clearSearch() {
+        document.getElementById('searchQuery').value = '';
+        isSearching = false;
+        currentPage = 0;
+        fetchBooks();
+    }
+
+    function showLoading() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('book-list').style.display = 'none';
+    }
+
+    function hideLoading() {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('book-list').style.display = 'block';
+    }
+
+    function fetchBooks(page = currentPage) {
+        currentPage = page;
+
+        if (isSearching) {
+            handleSearch(page);
+            return;
+        }
+
+        showLoading();
+        axios.get(`http://localhost:8080/api/book/books?page=${page}&size=${pageSize}`)
+            .then(response => {
+                const data = response.data;
+                displayBooks(data.books);
+                updatePagination(data.currentPage, data.totalPages);
+            })
+            .catch(error => console.error('Error fetching books:', error))
+            .finally(hideLoading);
+    }
+
+
+    function displayBooks(books) {
+        const bookListDiv = document.getElementById('book-list');
+        bookListDiv.innerHTML = '';
+
+        books.forEach(book => {
+            const bookElement = document.createElement('div');
+            bookElement.classList.add('book-line');
+
+            bookElement.innerHTML = `
+                <span class="book-title">${book.title}</span>
+                <span class="book-authors">by ${book.authors.join(', ')}</span>
+            `;
+            bookListDiv.appendChild(bookElement);
+        });
+    }
+
+    function updatePagination(currentPage, totalPages) {
+        const paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = '';
+
+        const paginationButtons = document.createElement('div');
+        paginationButtons.classList.add('pagination-buttons');
+
+        if (currentPage > 0) {
+            const prevButton = document.createElement('button');
+            prevButton.innerText = 'Previous';
+            prevButton.onclick = () => fetchBooks(currentPage - 1);
+            paginationButtons.appendChild(prevButton);
+        }
+
+        const pageInfo = document.createElement('span');
+        pageInfo.innerText = `Page ${currentPage + 1} of ${totalPages}`;
+        paginationButtons.appendChild(pageInfo);
+
+        if (currentPage < totalPages - 1) {
+            const nextButton = document.createElement('button');
+            nextButton.innerText = 'Next';
+            nextButton.onclick = () => fetchBooks(currentPage + 1);
+            paginationButtons.appendChild(nextButton);
+        }
+
+        paginationDiv.appendChild(paginationButtons);
+    }
+
+    fetchBooks();
+</script>
 
 </body>
 </html>
