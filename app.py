@@ -17,6 +17,10 @@ def create_app():
         books = get_books_catalog(limit=limit)
         return render_template("browse.html", books=books)
 
+    @app.route('/book/<int:book_id>')
+    def book_detail(book_id):
+        return render_template('book_detail.html', book_id=book_id)
+
     @app.route("/recommendations")
     def recommendations():
         return render_template("recommendations.html")

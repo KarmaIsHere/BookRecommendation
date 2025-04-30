@@ -13,20 +13,31 @@
     </header>
 
     <div class="container">
-        <h2 id="title">Loading...</h2>
-        <p id="authors"></p>
-        <div id="genres" class="genre-tags"></div>
         <a href="{{ url_for('browse') }}" class="back-link">← Back to Browse</a>
+        <div class="book-container">
+            <img id="bookImage" class="book-image" src="" alt="Book cover">
+            <div>
+                <h2 id="title">Loading...</h2>
+                <p id="authors"></p>
+                <div id="genres" class="genre-tags"></div>
+                <p id="summary" class="summary"></p>
+                <a id="textUrl" class="text-button" target="_blank">Read Full Text</a>
+            </div>
+        </div>
     </div>
 
     <script>
-        const bookId = {{ book_id }};
+        const bookId = {{ book_id | tojson }};
 
         axios.get(`http://localhost:8080/api/book/details/${bookId}`)
             .then(response => {
                 const book = response.data;
                 document.getElementById('title').innerText = book.title;
                 document.getElementById('authors').innerText = "by " + book.authors.join(', ');
+                document.getElementById('summary').innerText = book.summary || "No summary available.";
+                document.getElementById('bookImage').src = book.image || "https://via.placeholder.com/200x300?text=No+Cover";
+                document.getElementById('textUrl').href = book.textUrl || "#";
+                document.getElementById('textUrl').style.display = book.textUrl ? "inline-block" : "none";
 
                 const genresDiv = document.getElementById('genres');
                 genresDiv.innerHTML = '';
@@ -38,7 +49,7 @@
                 });
             })
             .catch(err => {
-                document.getElementById('title').innerText = 'Book not found';
+                document.querySelector('.container').innerHTML = '<p class="error">Book not found. Please try again later.</p>';
                 console.error('Error loading book:', err);
             });
     </script>
