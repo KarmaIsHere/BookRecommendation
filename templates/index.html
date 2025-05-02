@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookie</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-<header>
-    <h1>Welcome to Bookie</h1>
-</header>
-<nav>
-    <a href="{{ url_for('home') }}">Home</a>
-    <a href="{{ url_for('browse') }}">Browse Books</a>
-    <a href="{{ url_for('recommendations') }}">Recommendations</a>
-    <a href="{{ url_for('about') }}">About</a>
-    <a href="{{ url_for('contact') }}">Contact</a>
-</nav>
+{% extends "base.html" %}
 
-<div class="container">
+{% block title %}Home | Bookie{% endblock %}
+
+{% block content %}
     <div class="hero">
         <h2>Discover Your Next Favorite Book</h2>
         <p>Browse our collection of recommended books, carefully selected for you.</p>
@@ -42,16 +26,4 @@
             <p>by Leo Tolstoy</p>
         </div>
     </div>
-</div>
-
-<!-- Dialogflow Messenger -->
-<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-  intent="WELCOME"
-  chat-title="Bookie"
-  agent-id="038e653c-7661-4f25-81fe-b4d2a53ee657"
-  language-code="en">
-</df-messenger>
-
-</body>
-</html>
+{% endblock %}

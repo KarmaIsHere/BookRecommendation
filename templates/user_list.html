@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}My Book List{% endblock %}
+
+{% block content %}
+<h2>{{ username }}'s Book List</h2>
+
+{% if books %}
+    <div class="book-list">
+        <div class="book-line header">
+            <span class="book-title">Title</span>
+            <span>Status</span>
+            <span>Score</span>
+        </div>
+        {% for book in books %}
+        <div class="book-line">
+            <span class="book-title">{{ book.title }}</span>
+            <span>{{ book.status.replace('_', ' ').title() }}</span>
+            <span>{{ book.score }}</span>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No books found for {{ username }}.</p>
+{% endif %}
+{% endblock %}

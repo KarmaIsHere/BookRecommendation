@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Bookie</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-<header>
-    <h1>About Bookie</h1>
-</header>
+{% block title %}Home | Bookie{% endblock %}
 
-<nav>
-    <a href="{{ url_for('home') }}">Home</a>
-    <a href="{{ url_for('browse') }}">Browse Books</a>
-    <a href="{{ url_for('recommendations') }}">Recommendations</a>
-    <a href="{{ url_for('about') }}">About</a>
-    <a href="{{ url_for('contact') }}">Contact</a>
-</nav>
+{% block content %}
 
 <div class="container">
     <h2>What is Bookie?</h2>
@@ -47,5 +31,4 @@
 
 </div>
 
-</body>
-</html>
+{% endblock %}
