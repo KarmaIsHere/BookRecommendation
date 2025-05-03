@@ -1,15 +1,23 @@
 import os
 
 import requests
-from flask import Flask, render_template, redirect, url_for, request, flash, session
+from flask import Flask, render_template, redirect, url_for, request, flash
 from routes.chatbot_routes import chatbot_bp
 from utils.catalog import get_books_catalog
+from extensions import  login_manager
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+
 
 
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(chatbot_bp)
     app.secret_key = os.getenv('FLASK_SECRET_KEY', 'fallback_key')
+
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
+
+    from utils.models import User
 
     SPRING_API_BASE_URL = 'http://localhost:8080'
 
@@ -24,10 +32,12 @@ def create_app():
         return render_template("browse.html", books=books)
 
     @app.route('/book/<int:book_id>')
+    @login_required
     def book_detail(book_id):
-        return render_template('book_detail.html', book_id=book_id)
+        return render_template('book_detail.html', book_id=book_id, username=current_user.id)
 
     @app.route("/recommendations")
+    @login_required
     def recommendations():
         return render_template("recommendations.html")
 
@@ -40,8 +50,9 @@ def create_app():
         return render_template("contact.html")
 
     @app.route("/my-books")
+    @login_required
     def user_list():
-        username = "Admin"
+        username = current_user.id
         try:
             response = requests.get(f"http://localhost:8080/api/user-book/get/{username}")
             response.raise_for_status()
@@ -68,7 +79,8 @@ def create_app():
                 response = requests.post(f"{SPRING_API_BASE_URL}/api/login", json=user_data)
 
                 if response.status_code == 200:
-                    session['username'] = username
+                    user = User(username)
+                    login_user(user)
                     flash('Login successful!')
                     return redirect(url_for('home'))
                 else:
@@ -79,6 +91,13 @@ def create_app():
                 return redirect(url_for('login'))
 
         return render_template('login.html')
+
+    @app.route("/logout")
+    @login_required
+    def logout():
+        logout_user()
+        flash("Logged out.")
+        return redirect(url_for("login"))
 
     @app.route("/register", methods=['GET', 'POST'])
     def register():

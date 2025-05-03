@@ -3,13 +3,16 @@
 {% block title %}Home | Bookie{% endblock %}
 
 {% block content %}
-    <body>
     <header>
         <h1>Book Detail</h1>
     </header>
 
     <div class="container">
         <a href="{{ url_for('browse') }}" class="back-link">← Back to Browse</a>
+        <div id="userBookInfo" class="user-book-info" style="display: none;">
+            <p id="readingStatus"></p>
+            <p id="score"></p>
+        </div>
         <div class="book-container">
             <img id="bookImage" class="book-image" src="" alt="Book cover">
             <div>
@@ -26,6 +29,21 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const bookId = {{ book_id | tojson }};
+                const username = "{{ username }}"; // Inject username here
+
+                axios.get(`http://localhost:8080/api/user-book/${username}/${bookId}`)
+                    .then(response => {
+                        const userBook = response.data;
+
+                        if (userBook.status || userBook.score !== undefined) {
+                            document.getElementById('readingStatus').innerText = "Status: " + userBook.status;
+                            document.getElementById('score').innerText = "Score: " + userBook.score + "/10";
+                            document.getElementById('userBookInfo').style.display = "block";
+                        }
+                    })
+                    .catch(err => {
+                        console.log('User-book data not available for this book.');
+                    });
 
                 axios.get(`http://localhost:8080/api/book/details/${bookId}`)
                     .then(response => {
