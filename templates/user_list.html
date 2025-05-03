@@ -13,7 +13,7 @@
             <span>Score</span>
         </div>
         {% for book in books %}
-        <div class="book-line">
+        <div class="book-line" style="cursor: pointer;" onclick="window.location.href='/book/{{ book.book_id }}'">
             <span class="book-title">{{ book.title }}</span>
             <span>{{ book.status.replace('_', ' ').title() }}</span>
             <span>{{ book.score }}</span>
