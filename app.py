@@ -64,8 +64,14 @@ def create_app():
 
         return render_template("user_list.html", books=user_books, username=username)
 
+    from flask_login import current_user
+
     @app.route("/login", methods=['GET', 'POST'])
     def login():
+        if current_user.is_authenticated:
+            # If the user is already logged in, redirect them to the home page
+            return redirect(url_for('home'))
+
         if request.method == 'POST':
             username = request.form.get('username')
             password = request.form.get('password')
@@ -77,11 +83,9 @@ def create_app():
 
             try:
                 response = requests.post(f"{SPRING_API_BASE_URL}/api/login", json=user_data)
-
                 if response.status_code == 200:
                     user = User(username)
                     login_user(user)
-                    flash('Login successful!')
                     return redirect(url_for('home'))
                 else:
                     flash('Invalid credentials, please try again.')
@@ -97,7 +101,7 @@ def create_app():
     def logout():
         logout_user()
         flash("Logged out.")
-        return redirect(url_for("login"))
+        return redirect(url_for("login", _scheme='http', _external=True))
 
     @app.route("/register", methods=['GET', 'POST'])
     def register():
