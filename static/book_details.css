@@ -67,3 +67,67 @@ Book Detail Page Layout
 .text-button:hover {
     background-color: #1e88e5;
 }
+
+/* =======================
+   User Book Info (Status/Score)
+=========================== */
+
+.user-book-info {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.user-selection-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.user-selection-group label {
+    font-weight: bold;
+    color: #333;
+    min-width: 60px;
+}
+
+.user-selection-group select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fff;
+    cursor: pointer;
+    flex-grow: 1;
+    max-width: 250px;
+}
+
+.user-selection-group select:focus {
+    outline: none;
+    border-color: #42a5f5;
+    box-shadow: 0 0 0 0.2rem rgba(66, 165, 245, 0.25);
+}
+
+#saveChangesButton {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    align-self: flex-end;
+    margin-top: 10px;
+}
+
+#saveChangesButton:hover {
+    background-color: #218838;
+}

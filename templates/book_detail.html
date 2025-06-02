@@ -9,8 +9,25 @@
 
     <div class="container">
         <div id="userBookInfo" class="user-book-info" style="display: none;">
-            <p id="readingStatus"></p>
-            <p id="score"></p>
+            <div class="user-selection-group">
+                <label for="readingStatusSelect">Status:</label>
+                <select id="readingStatusSelect">
+                    <option value="PLAN_TO_READ">Plan to Read</option>
+                    <option value="READING">Reading</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="ON_HOLD">On Hold</option>
+                    <option value="DROPPED">Dropped</option>
+                </select>
+            </div>
+            <div class="user-selection-group">
+                <label for="scoreSelect">Score:</label>
+                <select id="scoreSelect">
+                    {% for i in range(1, 11) %}
+                        <option value="{{ i }}">{{ i }}/10</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button id="saveChangesButton" class="btn">Save Changes</button>
         </div>
         <button id="addButton" class="btn">Add to List</button>
         <div class="book-container">
@@ -30,8 +47,37 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const bookId = {{ book_id | tojson }};
                 const username = "{{ username }}";
-                const api_link = "{{ api }}"
+                const api_link = "{{ api }}";
                 const addButton = document.getElementById('addButton');
+                const userBookInfo = document.getElementById('userBookInfo');
+                const readingStatusSelect = document.getElementById('readingStatusSelect');
+                const scoreSelect = document.getElementById('scoreSelect');
+                const saveChangesButton = document.getElementById('saveChangesButton');
+
+                saveChangesButton.addEventListener('click', function () {
+                    const updateData = {
+                        username: username,
+                        bookId: bookId,
+                        status: readingStatusSelect.value,
+                        score: parseInt(scoreSelect.value),
+                    };
+
+                    axios.put(`${api_link}/api/user-book/update`, updateData)
+                        .then(response => {
+                            console.log("User book updated:", response.data);
+                            saveChangesButton.textContent = "Saved!";
+                            setTimeout(() => {
+                                saveChangesButton.textContent = "Save Changes";
+                            }, 2000);
+                        })
+                        .catch(error => {
+                            console.error("Error updating user book:", error);
+                            saveChangesButton.textContent = "Error Saving!";
+                            setTimeout(() => {
+                                saveChangesButton.textContent = "Save Changes";
+                            }, 2000);
+                        });
+                });
 
 
                 axios.get(`${api_link}/api/user-book/${username}/${bookId}`)
@@ -39,9 +85,10 @@
                         const userBook = response.data;
 
                         if (userBook.status || userBook.score !== undefined) {
-                            document.getElementById('readingStatus').innerText = "Status: " + userBook.status;
-                            document.getElementById('score').innerText = "Score: " + userBook.score + "/10";
-                            document.getElementById('userBookInfo').style.display = "block";
+                            readingStatusSelect.value = userBook.status;
+                            scoreSelect.value = userBook.score;
+
+                            userBookInfo.style.display = "block";
                             addButton.remove();
                         }
                     })
@@ -78,16 +125,26 @@
                         username: username,
                         bookId: bookId,
                         status: "PLAN_TO_READ",
-                        score: 7,
+                        score: 1,
                     };
 
                     axios.post(`${api_link}/api/user-book/create`, bookData)
                         .then(response => {
                             addButton.textContent = "Added!";
                             console.log("Book added to user list:", response.data);
+
+                            readingStatusSelect.value = "PLAN_TO_READ";
+                            scoreSelect.value = 0;
+
+                            userBookInfo.style.display = "block";
+                            addButton.remove();
                         })
                         .catch(error => {
                             console.error("Error adding book to list:", error);
+                            addButton.textContent = "Error adding!";
+                            setTimeout(() => {
+                                addButton.textContent = "Add to List";
+                            }, 2000);
                         });
                 });
             });
