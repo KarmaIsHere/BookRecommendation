@@ -3,175 +3,176 @@
 {% block title %}Home | Bookie{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Explore Our Collection</h2>
-    <p>Find books across different genres and authors.</p>
-    <div class="search-bar">
-        <input type="text" id="searchQuery" placeholder="Search by title or author">
-        <button id="searchButton">Search</button>
-        <button id="clearButton">Clear</button>
+    <div class="container">
+        <h2>Explore Our Collection</h2>
+        <p>Find books across different genres and authors.</p>
+        <div class="search-bar">
+            <input type="text" id="searchQuery" placeholder="Search by title or author">
+            <button id="searchButton">Search</button>
+            <button id="clearButton">Clear</button>
+        </div>
+
+        <div id="loading" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading books...</p>
+        </div>
+        <div id="book-list" class="book-list">
+        </div>
+        <div id="pagination" class="pagination-controls">
+        </div>
     </div>
 
-    <div id="loading" class="loading-spinner" style="display: none;">
-        <div class="spinner"></div>
-        <p>Loading books...</p>
-    </div>
-    <div id="book-list" class="book-list">
-    </div>
-    <div id="pagination" class="pagination-controls">
-    </div>
-</div>
+    {% block scripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let currentPage = 0;
+                let pageSize = 10;
+                let isSearching = false;
+                let lastQuery = '';
 
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    let currentPage = 0;
-    let pageSize = 10;
-    let isSearching = false;
-    let lastQuery = '';
+                const searchButton = document.getElementById('searchButton');
+                const clearButton = document.getElementById('clearButton');
+                const api_link = "{{ api }}"
 
-    const searchButton = document.getElementById('searchButton');
-    const clearButton = document.getElementById('clearButton');
-
-    if (searchButton) {
-        searchButton.addEventListener('click', function() {
-            handleSearch(0);  // Always start search from page 0
-        });
-    }
-
-    if (clearButton) {
-        clearButton.addEventListener('click', clearSearch);
-    }
-
-    function handleSearch(page = 0) {
-        const query = document.getElementById('searchQuery').value.trim();
-        console.log('Searching for:', query);
-
-        currentPage = page;
-
-        if (query === '') {
-            isSearching = false;
-            fetchBooks();
-            return;
-        }
-
-        isSearching = true;
-        lastQuery = query;
-
-        showLoading();
-
-        axios.get(`http://localhost:8080/api/book/search?query=${encodeURIComponent(query)}&page=${currentPage}&size=${pageSize}`)
-            .then(response => {
-                console.log('API Response:', response.data);
-                const data = response.data;
-
-                console.log('Books found:', data.books);
-
-                if (data.books && data.books.length > 0) {
-                    displayBooks(data.books);
-                } else {
-                    console.log('No books found for this query.');
-                    document.getElementById('book-list').innerHTML = `<p>No books found matching your query.</p>`;
+                if (searchButton) {
+                    searchButton.addEventListener('click', function () {
+                        handleSearch(0);
+                    });
                 }
 
-                updatePagination(data.currentPage, data.totalPages);
-            })
-            .catch(error => {
-                console.error('Error searching books:', error);
-            })
-            .finally(hideLoading);
-    }
+                if (clearButton) {
+                    clearButton.addEventListener('click', clearSearch);
+                }
 
-    function clearSearch() {
-        document.getElementById('searchQuery').value = '';
-        isSearching = false;
-        currentPage = 0;
-        fetchBooks();
-    }
+                function handleSearch(page = 0) {
+                    const query = document.getElementById('searchQuery').value.trim();
+                    console.log('Searching for:', query);
 
-    function showLoading() {
-        document.getElementById('loading').style.display = 'block';
-        document.getElementById('book-list').style.display = 'none';
-    }
+                    currentPage = page;
 
-    function hideLoading() {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('book-list').style.display = 'block';
-    }
+                    if (query === '') {
+                        isSearching = false;
+                        fetchBooks();
+                        return;
+                    }
 
-    function fetchBooks(page = currentPage) {
-        currentPage = page;
+                    isSearching = true;
+                    lastQuery = query;
 
-        if (isSearching) {
-            handleSearch(page);
-            return;
-        }
+                    showLoading();
 
-        showLoading();
-        axios.get(`http://localhost:8080/api/book/books?page=${page}&size=${pageSize}`)
-            .then(response => {
-                const data = response.data;
-                displayBooks(data.books);
-                updatePagination(data.currentPage, data.totalPages);
-            })
-            .catch(error => console.error('Error fetching books:', error))
-            .finally(hideLoading);
-    }
+                    axios.get(`${api_link}/api/book/search?query=${encodeURIComponent(query)}&page=${currentPage}&size=${pageSize}`)
+                        .then(response => {
+                            console.log('API Response:', response.data);
+                            const data = response.data;
 
-    function displayBooks(books) {
-        const bookListDiv = document.getElementById('book-list');
-        bookListDiv.innerHTML = '';  // Clear any previous content
+                            console.log('Books found:', data.books);
 
-        if (books && books.length > 0) {
-            books.forEach(book => {
-                const bookElement = document.createElement('div');
-                bookElement.classList.add('book-line');
-                bookElement.style.cursor = 'pointer';
-                bookElement.onclick = () => {
-                    window.location.href = `/book/${book.book_id}`;
-                };
+                            if (data.books && data.books.length > 0) {
+                                displayBooks(data.books);
+                            } else {
+                                console.log('No books found for this query.');
+                                document.getElementById('book-list').innerHTML = `<p>No books found matching your query.</p>`;
+                            }
 
-                bookElement.innerHTML = `
+                            updatePagination(data.currentPage, data.totalPages);
+                        })
+                        .catch(error => {
+                            console.error('Error searching books:', error);
+                        })
+                        .finally(hideLoading);
+                }
+
+                function clearSearch() {
+                    document.getElementById('searchQuery').value = '';
+                    isSearching = false;
+                    currentPage = 0;
+                    fetchBooks();
+                }
+
+                function showLoading() {
+                    document.getElementById('loading').style.display = 'block';
+                    document.getElementById('book-list').style.display = 'none';
+                }
+
+                function hideLoading() {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('book-list').style.display = 'block';
+                }
+
+                function fetchBooks(page = currentPage) {
+                    currentPage = page;
+
+                    if (isSearching) {
+                        handleSearch(page);
+                        return;
+                    }
+
+                    showLoading();
+                    axios.get(`${api_link}/api/book/books?page=${page}&size=${pageSize}`)
+                        .then(response => {
+                            const data = response.data;
+                            displayBooks(data.books);
+                            updatePagination(data.currentPage, data.totalPages);
+                        })
+                        .catch(error => console.error('Error fetching books:', error))
+                        .finally(hideLoading);
+                }
+
+                function displayBooks(books) {
+                    const bookListDiv = document.getElementById('book-list');
+                    bookListDiv.innerHTML = '';  // Clear any previous content
+
+                    if (books && books.length > 0) {
+                        books.forEach(book => {
+                            const bookElement = document.createElement('div');
+                            bookElement.classList.add('book-line');
+                            bookElement.style.cursor = 'pointer';
+                            bookElement.onclick = () => {
+                                window.location.href = `/book/${book.book_id}`;
+                            };
+
+                            bookElement.innerHTML = `
                     <span class="book-title">${book.title}</span>
                     <span class="book-authors">by ${book.authors.join(', ')}</span>
                 `;
-                bookListDiv.appendChild(bookElement);
+                            bookListDiv.appendChild(bookElement);
+                        });
+                    } else {
+                        bookListDiv.innerHTML = `<p>No books found matching your query.</p>`;
+                    }
+                }
+
+                function updatePagination(currentPage, totalPages) {
+                    const paginationDiv = document.getElementById('pagination');
+                    paginationDiv.innerHTML = '';
+
+                    const paginationButtons = document.createElement('div');
+                    paginationButtons.classList.add('pagination-buttons');
+
+                    if (currentPage > 0) {
+                        const prevButton = document.createElement('button');
+                        prevButton.innerText = 'Previous';
+                        prevButton.onclick = () => fetchBooks(currentPage - 1);
+                        paginationButtons.appendChild(prevButton);
+                    }
+
+                    const pageInfo = document.createElement('span');
+                    pageInfo.innerText = `Page ${currentPage + 1} of ${totalPages}`;
+                    paginationButtons.appendChild(pageInfo);
+
+                    if (currentPage < totalPages - 1) {
+                        const nextButton = document.createElement('button');
+                        nextButton.innerText = 'Next';
+                        nextButton.onclick = () => fetchBooks(currentPage + 1);
+                        paginationButtons.appendChild(nextButton);
+                    }
+
+                    paginationDiv.appendChild(paginationButtons);
+                }
+
+                fetchBooks();
             });
-        } else {
-            bookListDiv.innerHTML = `<p>No books found matching your query.</p>`;
-        }
-    }
-
-    function updatePagination(currentPage, totalPages) {
-        const paginationDiv = document.getElementById('pagination');
-        paginationDiv.innerHTML = '';  // Clear previous pagination controls
-
-        const paginationButtons = document.createElement('div');
-        paginationButtons.classList.add('pagination-buttons');
-
-        if (currentPage > 0) {
-            const prevButton = document.createElement('button');
-            prevButton.innerText = 'Previous';
-            prevButton.onclick = () => fetchBooks(currentPage - 1);
-            paginationButtons.appendChild(prevButton);
-        }
-
-        const pageInfo = document.createElement('span');
-        pageInfo.innerText = `Page ${currentPage + 1} of ${totalPages}`;
-        paginationButtons.appendChild(pageInfo);
-
-        if (currentPage < totalPages - 1) {
-            const nextButton = document.createElement('button');
-            nextButton.innerText = 'Next';
-            nextButton.onclick = () => fetchBooks(currentPage + 1);
-            paginationButtons.appendChild(nextButton);
-        }
-
-        paginationDiv.appendChild(paginationButtons);
-    }
-
-    fetchBooks();
-});
-</script>
-{% endblock %}
+        </script>
+    {% endblock %}
 {% endblock %}

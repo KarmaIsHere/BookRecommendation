@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Recommendations{% endblock %}
+
+{% block content %}
+<h2>Recommended for You</h2>
+
+{% if recommendations %}
+    <div class="book-list">
+        <div class="book-line header">
+            <span class="book-title">Recommended Book</span>
+            <span>Based on Genre</span>
+            <span>Based on Author</span>
+        </div>
+        {% for rec in recommendations %}
+        <div class="book-line" style="cursor: pointer;" onclick="window.location.href='/book/{{ rec.book_id }}'">
+            <span class="book-title">{{ rec.title }}</span>
+            <span>{{ rec.genre }}</span>
+            <span>{{ rec.author }}</span>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No recommendations available at the moment.</p>
+{% endif %}
+{% endblock %}

@@ -12,6 +12,7 @@
             <p id="readingStatus"></p>
             <p id="score"></p>
         </div>
+        <button id="addButton" class="btn">Add to List</button>
         <div class="book-container">
             <img id="bookImage" class="book-image" src="" alt="Book cover">
             <div>
@@ -28,9 +29,12 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const bookId = {{ book_id | tojson }};
-                const username = "{{ username }}"; // Inject username here
+                const username = "{{ username }}";
+                const api_link = "{{ api }}"
+                const addButton = document.getElementById('addButton');
 
-                axios.get(`http://localhost:8080/api/user-book/${username}/${bookId}`)
+
+                axios.get(`${api_link}/api/user-book/${username}/${bookId}`)
                     .then(response => {
                         const userBook = response.data;
 
@@ -38,13 +42,14 @@
                             document.getElementById('readingStatus').innerText = "Status: " + userBook.status;
                             document.getElementById('score').innerText = "Score: " + userBook.score + "/10";
                             document.getElementById('userBookInfo').style.display = "block";
+                            addButton.remove();
                         }
                     })
                     .catch(err => {
                         console.log('User-book data not available for this book.');
                     });
 
-                axios.get(`http://localhost:8080/api/book/details/${bookId}`)
+                axios.get(`${api_link}/api/book/details/${bookId}`)
                     .then(response => {
                         const book = response.data;
                         document.getElementById('title').innerText = book.title;
@@ -67,6 +72,24 @@
                         document.querySelector('.container').innerHTML = '<p class="error">Book not found. Please try again later.</p>';
                         console.error('Error loading book:', err);
                     });
+
+                addButton.addEventListener('click', function () {
+                    const bookData = {
+                        username: username,
+                        bookId: bookId,
+                        status: "PLAN_TO_READ",
+                        score: 7,
+                    };
+
+                    axios.post(`${api_link}/api/user-book/create`, bookData)
+                        .then(response => {
+                            addButton.textContent = "Added!";
+                            console.log("Book added to user list:", response.data);
+                        })
+                        .catch(error => {
+                            console.error("Error adding book to list:", error);
+                        });
+                });
             });
         </script>
     {% endblock %}

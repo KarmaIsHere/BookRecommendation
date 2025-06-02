@@ -22,6 +22,13 @@
     align-items: center;
 }
 
+.book-line.header {
+    font-weight: bold;
+    background-color: #BBDEFB;
+    cursor: default;
+    box-shadow: none;
+}
+
 
 .book-title {
     font-weight: bold;

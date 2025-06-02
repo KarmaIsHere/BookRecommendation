@@ -1,15 +1,32 @@
-import pandas as pd
+import requests
 
-def get_books_catalog(limit):
-    get_catalog = True
+def get_books_catalog(limit, api_link):
+    page = 0
+    collected_books = []
 
-    if get_catalog:
-        df_books_catalog = pd.read_csv('https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv', keep_default_na=False)
-        df_books_catalog = df_books_catalog[df_books_catalog['Language'] == 'en']
-        df_books_catalog.reset_index(drop=True, inplace=True)
+    while len(collected_books) < limit:
+        try:
+            response = requests.get(
+                f"{api_link}/api/book/books",
+                params={"page": page, "size": limit}
+            )
+            response.raise_for_status()
+            data = response.json()
 
-    df_books_catalog['Authors'] = df_books_catalog['Authors'].fillna('Unknown Author')
+            for item in data["books"]:
+                title = item.get("title", "Untitled")
+                authors = ", ".join(item.get("authors", ["Unknown Author"]))
+                collected_books.append({"Title": title, "Authors": authors})
+                if len(collected_books) >= limit:
+                    break
 
-    books = df_books_catalog[['Title', 'Authors']].head(limit).to_dict(orient='records')
+            if data["currentPage"] + 1 >= data["totalPages"]:
+                break
 
-    return books
+            page += 1
+
+        except requests.RequestException as e:
+            print(f"Error fetching books: {e}")
+            break
+
+    return collected_books[:limit]
