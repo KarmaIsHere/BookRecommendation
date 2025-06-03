@@ -7,7 +7,7 @@ from utils.catalog import get_books_catalog
 from extensions import  login_manager
 from flask_login import  login_user, logout_user, login_required
 
-from utils.update_embeddings import generate_and_update_embeddings, fetch_all_book_ids
+from utils.embeddings import generate_and_update_embeddings, fetch_all_book_ids
 
 
 def create_app():
