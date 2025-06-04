@@ -17,6 +17,15 @@ def fetch_all_book_ids(SPRING_API_BASE_URL):
         print(f"Error fetching book IDs: {e}")
         return []
 
+def fetch_all_book_embeddings(genre, author, SPRING_API_BASE_URL):
+    try:
+        response = requests.get(f"{SPRING_API_BASE_URL}/api/book/all-embeddings/{genre}/{author}")
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        print(f"Error fetching book embeddings: {e}")
+        return {}
+
 def generate_and_update_embeddings(book_ids, SPRING_API_BASE_URL):
     results = []
     for book_id in book_ids:
