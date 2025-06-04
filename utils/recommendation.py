@@ -4,7 +4,8 @@ from numpy.linalg import norm
 from utils.embeddings import create_embedding
 from utils.embeddings import fetch_all_book_embeddings
 
-SPRING_API_BASE_URL = 'http://localhost:8080'
+SPRING_API_BASE_URL = 'https://bookrecommenddbserver.onrender.com'
+#SPRING_API_BASE_URL = 'http://localhost:8080'
 
 def cosine_similarity(vec1, vec2):
     if vec1 is None or vec2 is None:

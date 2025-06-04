@@ -20,8 +20,8 @@ def create_app():
 
     from utils.models import User
 
-    #SPRING_API_BASE_URL = 'https://bookrecommenddbserver.onrender.com'
-    SPRING_API_BASE_URL = 'http://localhost:8080'
+    SPRING_API_BASE_URL = 'https://bookrecommenddbserver.onrender.com'
+    #SPRING_API_BASE_URL = 'http://localhost:8080'
     @app.route("/")
     def home():
         return render_template("index.html")
