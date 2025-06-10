@@ -3,7 +3,8 @@ from extensions import login_manager
 import requests
 import os
 
-SPRING_API_BASE_URL = os.getenv('SPRING_API_BASE_URL', 'http://localhost:8080')
+from utils.config import SPRING_API_BASE_URL
+
 
 class User(UserMixin):
     def __init__(self, username, is_admin=False):
